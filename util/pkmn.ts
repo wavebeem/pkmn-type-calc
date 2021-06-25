@@ -16,7 +16,7 @@ export interface Pokemon {
   speed: number;
 }
 
-export const AllPokemon: Pokemon[] = data;
+export const AllPokemon: Pokemon[] = data as any;
 
 export const fallbackCoverageTypes = AllPokemon.filter((pkmn) => {
   // Slowking is weird right now... thanks Bulbapedia

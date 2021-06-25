@@ -4,27 +4,7 @@ import Head from "next/head";
 import classnames from "classnames";
 import BasicHead from "./BasicHead";
 import { useStorage } from "../util/useStorage";
-
-interface NavLinkProps {
-  className: string;
-  activeClassName: string;
-  href: string;
-}
-
-// TODO: Use activeClassName somehow
-// https://flaviocopes.com/nextjs-active-link/
-const NavLink: React.FC<NavLinkProps> = ({
-  className,
-  activeClassName,
-  href,
-  children,
-}) => {
-  return (
-    <Link href={href}>
-      <a className={className}>{children}</a>
-    </Link>
-  );
-};
+import NavLink from "./NavLink";
 
 const title = "Pokémon Type Calculator";
 
@@ -69,28 +49,28 @@ const Layout: React.FC = ({ children }) => {
               activeClassName={tabClassActive}
               href={`/offense${storage.paramsOffense}`}
             >
-              Offense
+              <a>Offense</a>
             </NavLink>
             <NavLink
               className={tabClass}
               activeClassName={tabClassActive}
               href={`/defense${storage.paramsDefense}`}
             >
-              Defense
+              <a>Defense</a>
             </NavLink>
             <NavLink
               className={tabClass}
               activeClassName={tabClassActive}
               href={`/pokedex${storage.paramsPokedex}`}
             >
-              Pokédex
+              <a>Pokédex</a>
             </NavLink>
             <NavLink
               className={tabClass}
               activeClassName={tabClassActive}
               href="/info"
             >
-              Info
+              <a>Info</a>
             </NavLink>
           </nav>
           {children}

@@ -6,6 +6,7 @@ import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import { useQuery } from "../util/useQuery";
 import { useStorage } from "../util/useStorage";
+import { buildParams } from "../util/buildParams";
 
 interface DefenseProps {}
 
@@ -17,15 +18,15 @@ export default function Defense({}: DefenseProps) {
   const [type1 = Type.NORMAL, type2 = Type.NONE] = typesFromString(types);
 
   function createParams(types: Type[]): string {
-    const params = new URLSearchParams();
-    if (types.length >= 0) {
-      if (types[1] === Type.NONE) {
-        params.set("types", types[0]);
-      } else {
-        params.set("types", types.join(" "));
+    return buildParams((params) => {
+      if (types.length >= 0) {
+        if (types[1] === Type.NONE) {
+          params.set("types", types[0]);
+        } else {
+          params.set("types", types.join(" "));
+        }
       }
-    }
-    return "?" + params;
+    });
   }
 
   function updateTypes(types: Type[]) {

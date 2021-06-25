@@ -171,6 +171,14 @@ button {
   );
 }
 
+.visibility-hidden {
+  visibility: hidden;
+}
+
+.no-pointer {
+  pointer-events: none;
+}
+
 .content-wide {
   max-width: 1100px;
 }

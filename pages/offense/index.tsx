@@ -1,17 +1,19 @@
-import * as React from "react";
 import { useRouter } from "next/router";
-import { CoverageType, Type, typesFromString } from "../../util/data";
+import * as React from "react";
+import Layout from "../../components/Layout";
 import * as Matchups from "../../components/Matchups";
 import MultiTypeSelector from "../../components/MultiTypeSelector";
-import Layout from "../../components/Layout";
-import { useStorage } from "../../util/useStorage";
+import { buildParams } from "../../util/buildParams";
+import { CoverageType, Type, typesFromString } from "../../util/data";
 import { useQuery } from "../../util/useQuery";
+import { useStorage } from "../../util/useStorage";
 
 interface OffenseProps {}
 
 export default function ScreenOffense({}: OffenseProps) {
   const router = useRouter();
   const [, updateStorage] = useStorage();
+  // console.log(useQuery("types"));
   const types = useQuery("types") ?? "";
   const offenseTypes = typesFromString(types);
   const [coverageTypes, setCoverageTypes] = React.useState<CoverageType[]>([]);
@@ -29,11 +31,11 @@ export default function ScreenOffense({}: OffenseProps) {
   }, []);
 
   function createParams(types: Type[]): string {
-    const params = new URLSearchParams();
-    if (types.length > 0) {
-      params.set("types", types.join(" "));
-    }
-    return "?" + params;
+    return buildParams((params) => {
+      if (types.length > 0) {
+        params.set("types", types.join(" "));
+      }
+    });
   }
 
   const updateOffenseTypes = (types: Type[]) => {

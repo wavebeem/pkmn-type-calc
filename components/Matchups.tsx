@@ -76,7 +76,9 @@ function Matchups({
   return (
     <div className="tc pt2" id={`matchup-${kind}`}>
       {kind === "offense" ? (
-        <div>
+        <div
+          className={classnames(isLoadingCoverageTypes && "no-pointer o-20")}
+        >
           <h3 className="f5 mt3 mb0">
             Weakness Coverage{" "}
             <span className="normal">
@@ -88,9 +90,11 @@ function Matchups({
             </span>
           </h3>
           <div className="pt1 mw5 center tc">
-            {isLoadingCoverageTypes ? null : (
-              <DexCoverage coverageTypes={coverageTypes} types={types} />
-            )}
+            <DexCoverage
+              coverageTypes={coverageTypes}
+              types={types}
+              isLoading={isLoadingCoverageTypes}
+            />
           </div>
         </div>
       ) : null}

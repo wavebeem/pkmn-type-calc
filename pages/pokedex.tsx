@@ -8,6 +8,7 @@ import Monster from "../components/Monster";
 import { AllPokemon } from "../util/pkmn";
 import { useQuery } from "../util/useQuery";
 import { useStorage } from "../util/useStorage";
+import { buildParams } from "../util/buildParams";
 
 const PAGE_SIZE = 20;
 
@@ -30,14 +31,14 @@ export default function ScreenPokedex({}: DexProps) {
   }, [query]);
 
   function createParams(newQuery: string, newPage: number): string {
-    const params = new URLSearchParams();
-    if (newQuery) {
-      params.set("q", newQuery);
-    }
-    if (Number(newPage) > 0) {
-      params.set("page", String(newPage + 1));
-    }
-    return "?" + params;
+    return buildParams((params) => {
+      if (newQuery) {
+        params.set("q", newQuery);
+      }
+      if (Number(newPage) > 0) {
+        params.set("page", String(newPage + 1));
+      }
+    });
   }
 
   function update(newQuery: string, newPage: number) {
