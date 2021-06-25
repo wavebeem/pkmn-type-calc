@@ -1,19 +1,13 @@
 import * as React from "react";
 import { CoverageType, Effectiveness, matchupFor, Type } from "../util/data";
 import { PercentBar } from "./PercentBar";
-import { fallbackCoverageTypes } from "../util/pkmn";
-
-// TODO: Load fallbackCoverageTypes async to avoid bundle bloat?
 
 interface DexCoverageProps {
-  coverageTypes?: CoverageType[];
+  coverageTypes: CoverageType[];
   types: Type[];
 }
 
-const DexCoverage: React.FC<DexCoverageProps> = ({
-  coverageTypes = fallbackCoverageTypes,
-  types,
-}) => {
+const DexCoverage: React.FC<DexCoverageProps> = ({ coverageTypes, types }) => {
   const count = coverageTypes.filter(({ type1, type2 }) => {
     const matchups = types.map((t) => matchupFor(type1, type2, t));
     return matchups.some((effectiveness) => {

@@ -58,7 +58,7 @@ Section.displayName = "Section";
 
 interface MatchupsProps {
   coverageTypes?: CoverageType[];
-  setCoverageTypes: (types: CoverageType[]) => void;
+  isLoadingCoverageTypes: boolean;
   kind: "offense" | "defense";
   types: Type[];
   formatTitle: (value: string) => string;
@@ -66,8 +66,8 @@ interface MatchupsProps {
 }
 
 function Matchups({
-  coverageTypes,
-  setCoverageTypes,
+  coverageTypes = [],
+  isLoadingCoverageTypes,
   kind,
   types,
   formatTitle,
@@ -88,7 +88,9 @@ function Matchups({
             </span>
           </h3>
           <div className="pt1 mw5 center tc">
-            <DexCoverage coverageTypes={coverageTypes} types={types} />
+            {isLoadingCoverageTypes ? null : (
+              <DexCoverage coverageTypes={coverageTypes} types={types} />
+            )}
           </div>
         </div>
       ) : null}
@@ -130,8 +132,8 @@ export interface DefenseProps {
 export function Defense({ type1, type2 }: DefenseProps) {
   return (
     <Matchups
+      isLoadingCoverageTypes={false}
       kind="defense"
-      setCoverageTypes={() => {}}
       types={[type1, type2]}
       formatTitle={(x) => `Takes ${x} From`}
       matchups={defensiveMatchups(type1, type2)}
@@ -143,13 +145,13 @@ Defense.displayName = "Matchups.Defense";
 
 export interface OffenseProps {
   coverageTypes?: CoverageType[];
-  setCoverageTypes: (types: CoverageType[]) => void;
+  isLoadingCoverageTypes: boolean;
   types: Type[];
 }
 
 export function Offense({
   coverageTypes,
-  setCoverageTypes,
+  isLoadingCoverageTypes,
   types,
 }: OffenseProps) {
   return (
@@ -157,7 +159,7 @@ export function Offense({
       kind="offense"
       types={types}
       coverageTypes={coverageTypes}
-      setCoverageTypes={setCoverageTypes}
+      isLoadingCoverageTypes={isLoadingCoverageTypes}
       formatTitle={(x) => `Deals ${x} to`}
       matchups={offensiveMatchups(types)}
     />

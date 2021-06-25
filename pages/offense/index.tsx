@@ -4,42 +4,46 @@ import { CoverageType, Type, typesFromString } from "../../util/data";
 import * as Matchups from "../../components/Matchups";
 import MultiTypeSelector from "../../components/MultiTypeSelector";
 import Layout from "../../components/Layout";
+import { useSessionStorage } from "../../util/useSessionStorage";
+import { useQuery } from "../../util/useQuery";
 
-interface OffenseProps {
-  coverageTypes?: CoverageType[];
-  setCoverageTypes: (types: CoverageType[]) => void;
-  setOffenseParams: (params: string) => void;
-}
+interface OffenseProps {}
 
-export default function ScreenOffense({
-  coverageTypes,
-  setCoverageTypes,
-  setOffenseParams,
-}: OffenseProps) {
+export default function ScreenOffense({}: OffenseProps) {
   const router = useRouter();
-  console.log(router);
-  console.log(router.query);
-  // const search = useSearch();
-  // const history = useHistory();
-  // const offenseTypes = typesFromString(router.query.types || "");
-  const offenseTypes = ["fire", "flying"] as Type[];
+  const [, setOffenseParams] = useSessionStorage("params.offense", "");
+  const types = useQuery("types") ?? "";
+  const offenseTypes = typesFromString(types);
+  const [coverageTypes, setCoverageTypes] = React.useState<CoverageType[]>([]);
+  const [isLoadingCoverageTypes, setIsLoadingCoverageTypes] = React.useState(
+    true
+  );
 
-  // function createParams(types: Type[]): string {
-  //   const params = new URLSearchParams();
-  //   if (types.length > 0) {
-  //     params.set("types", types.join(" "));
-  //   }
-  //   return "?" + params;
-  // }
+  React.useEffect(() => {
+    async function load() {
+      const { fallbackCoverageTypes } = await import("../../util/pkmn");
+      setCoverageTypes(fallbackCoverageTypes);
+      setIsLoadingCoverageTypes(false);
+    }
+    load();
+  }, []);
+
+  function createParams(types: Type[]): string {
+    const params = new URLSearchParams();
+    if (types.length > 0) {
+      params.set("types", types.join(" "));
+    }
+    return "?" + params;
+  }
 
   const updateOffenseTypes = (types: Type[]) => {
-    // history.replace({ search: createParams(types) });
+    router.replace({ search: createParams(types) });
   };
 
-  // const params = createParams(offenseTypes);
-  // React.useEffect(() => {
-  //   setOffenseParams(params);
-  // }, [params]);
+  const params = createParams(offenseTypes);
+  React.useEffect(() => {
+    setOffenseParams(params);
+  }, [params, setOffenseParams]);
 
   const classH2 = "tc f5 mv3";
   return (
@@ -56,7 +60,7 @@ export default function ScreenOffense({
           <hr className="dn-ns subtle-hr mv4" />
           <Matchups.Offense
             coverageTypes={coverageTypes}
-            setCoverageTypes={setCoverageTypes}
+            isLoadingCoverageTypes={isLoadingCoverageTypes}
             types={offenseTypes}
           />
         </div>

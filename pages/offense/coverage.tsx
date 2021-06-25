@@ -13,6 +13,7 @@ import { pickFile } from "../../util/pickFile";
 import { fallbackCoverageTypes } from "../../util/pkmn";
 import { saveFile } from "../../util/saveFile";
 import Layout from "../../components/Layout";
+import { useSessionStorage } from "../../util/useSessionStorage";
 
 const buttonClasses = classnames(
   "no-underline",
@@ -26,13 +27,12 @@ const buttonClasses = classnames(
 
 interface WeaknessCoverageProps {
   setCoverageTypes: (types: CoverageType[]) => void;
-  offenseParams: string;
 }
 
 export default function ScreenWeaknessCoverage({
   setCoverageTypes,
-  offenseParams,
 }: WeaknessCoverageProps) {
+  const [offenseParams] = useSessionStorage("params.offense", "");
   const [lastUpdated, setLastUpdated] = React.useState(new Date());
   const [statusText, setStatusText] = React.useState("");
   const statusRef = React.useRef<HTMLParagraphElement | null>(null);

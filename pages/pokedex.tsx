@@ -1,136 +1,33 @@
-import classnames from "classnames";
 import matchSorter from "match-sorter";
+import { useRouter } from "next/router";
 import * as React from "react";
-import Link from "next/link";
-import { Type } from "../util/data";
-import { getImage } from "../components/getImage";
-import Paginator from "../components/Paginator";
-import { pickTranslation } from "../util/pickTranslation";
-import { AllPokemon, Pokemon } from "../util/pkmn";
-import Search from "../components/Search";
-import StatsTable from "../components/StatsTable";
 import Layout from "../components/Layout";
+import Paginator from "../components/Paginator";
+import Search from "../components/Search";
+import Monster from "../components/Monster";
+import { AllPokemon } from "../util/pkmn";
+import { useQuery } from "../util/useQuery";
+import { useSessionStorage } from "../util/useSessionStorage";
 
 const PAGE_SIZE = 20;
-const nbsp = "\u00a0";
 
-interface MonsterTypeProps {
-  type: Type;
-  index: number;
-}
+interface DexProps {}
 
-function MonsterType(props: MonsterTypeProps) {
-  return (
-    <div
-      className={classnames(
-        `type-${props.type} type-bg-dark`,
-        "ttc tc flex",
-        "pv0 ph2 lh-copy b",
-        "br-pill ba border3 f6",
-        { ml1: props.index > 0 }
-      )}
-    >
-      {props.type}
-    </div>
-  );
-}
+export default function ScreenPokedex({}: DexProps) {
+  const router = useRouter();
+  const query = useQuery("q") ?? "";
+  const page = Number(useQuery("page") ?? "1") - 1;
 
-MonsterType.displayName = "MonsterType";
+  const [, setPokedexParams] = useSessionStorage("params.pokedex", "");
 
-interface MonsterProps {
-  pokemon: Pokemon;
-  index: number;
-}
-
-function Monster(props: MonsterProps) {
-  const displayNumber = "#" + String(props.pokemon.number).padStart(3, "0");
-  const params = new URLSearchParams({ types: props.pokemon.types.join(" ") });
-  const speciesName = pickTranslation(props.pokemon.speciesNames);
-  const formName = pickTranslation(props.pokemon.formNames);
-  return (
-    <div className={classnames("fg1 pv3", "flex-ns items-center", "Monster")}>
-      <div className="flex flex-column">
-        <div className="flex flex-column pa3 br4 bg1 flex ba border4">
-          <div className="flex items-center">
-            <h2 className="mv0 f4">{speciesName}</h2>
-            <div className="ph1 flex-auto" />
-            <div className="fg3 mv0 tabular-nums f5">{displayNumber}</div>
-          </div>
-          <div className="nv2 fg3 f5">{formName || nbsp}</div>
-
-          <div className="pv3 flex justify-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={getImage(props.pokemon.id)}
-              role="presentation"
-              alt=""
-              className="db img-crisp"
-              width={96}
-              height={96}
-            />
-          </div>
-
-          <div className="pt2 flex justify-end">
-            {props.pokemon.types.map((t, i) => (
-              <MonsterType key={i} type={t} index={i} />
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-column">
-        <StatsTable pokemon={props.pokemon} />
-        <div className="flex justify-end">
-          <Link href={`/offense?${params}`}>
-            <a
-              aria-label={`Offense for ${speciesName} (${formName})`}
-              className="underline fg-link OutlineFocus"
-            >
-              Offense
-            </a>
-          </Link>
-          <span aria-hidden="true" className="o-50">
-            &nbsp;&bull;&nbsp;
-          </span>
-          <Link href={`/defense?${params}`}>
-            <a
-              aria-label={`Defense for ${speciesName} (${formName})`}
-              className="underline fg-link OutlineFocus"
-            >
-              Defense
-            </a>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-Monster.displayName = "Monster";
-
-interface DexProps {
-  setPokedexParams: (params: string) => void;
-}
-
-export default function ScreenPokedex(props: DexProps) {
-  // const search = useSearch();
-  // const history = useHistory();
-
-  // const query = search.get("q") || "";
-  // const page = Number(search.get("page") || 1) - 1;
-
-  const query = "";
-  const page = 0;
-
-  // const pkmn = React.useMemo(() => {
-  //   const s = query.trim();
-  //   if (/^[0-9]+$/.test(s)) {
-  //     const number = Number(s);
-  //     return AllPokemon.filter((p) => p.number === number);
-  //   }
-  //   return matchSorter(AllPokemon, s, { keys: ["name", "number"] });
-  // }, [query]);
-
-  const pkmn = AllPokemon;
+  const pkmn = React.useMemo(() => {
+    const s = query.trim();
+    if (/^[0-9]+$/.test(s)) {
+      const number = Number(s);
+      return AllPokemon.filter((p) => p.number === number);
+    }
+    return matchSorter(AllPokemon, s, { keys: ["name", "number"] });
+  }, [query]);
 
   function createParams(newQuery: string, newPage: number): string {
     const params = new URLSearchParams();
@@ -144,14 +41,14 @@ export default function ScreenPokedex(props: DexProps) {
   }
 
   function update(newQuery: string, newPage: number) {
-    // const params = createParams(newQuery, newPage);
-    // history.replace({ search: params });
+    const params = createParams(newQuery, newPage);
+    router.replace({ search: params });
   }
 
-  // const params = createParams(query, page);
-  // React.useEffect(() => {
-  //   props.setPokedexParams(params);
-  // }, [params]);
+  const params = createParams(query, page);
+  React.useEffect(() => {
+    setPokedexParams(params);
+  }, [params, setPokedexParams]);
 
   return (
     <Layout>

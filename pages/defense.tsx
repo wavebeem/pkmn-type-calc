@@ -3,36 +3,33 @@ import { Type, typesFromString } from "../util/data";
 import * as Matchups from "../components/Matchups";
 import TypeSelector from "../components/TypeSelector";
 import Layout from "../components/Layout";
+import { useRouter } from "next/router";
+import { useQuery } from "../util/useQuery";
+import { useSessionStorage } from "../util/useSessionStorage";
 
-interface DefenseProps {
-  setDefenseParams: (params: string) => void;
-}
+interface DefenseProps {}
 
-export default function ScreenDefense(props: DefenseProps) {
-  // const search = useSearch();
-  // const history = useHistory();
+export default function Defense({}: DefenseProps) {
+  const router = useRouter();
+  const types = useQuery("types") ?? "";
+  const [, setDefenseParams] = useSessionStorage("params.defense", "");
 
-  const type1 = Type.NORMAL;
-  const type2 = Type.NONE;
-  // const [type1 = Type.NORMAL, type2 = Type.NONE] = typesFromString(
-  //   search.get("types") || ""
-  // );
+  const [type1 = Type.NORMAL, type2 = Type.NONE] = typesFromString(types);
 
   function createParams(types: Type[]): string {
-    return "?";
-    // const params = new URLSearchParams();
-    // if (types.length >= 0) {
-    //   if (types[1] === Type.NONE) {
-    //     params.set("types", types[0]);
-    //   } else {
-    //     params.set("types", types.join(" "));
-    //   }
-    // }
-    // return "?" + params;
+    const params = new URLSearchParams();
+    if (types.length >= 0) {
+      if (types[1] === Type.NONE) {
+        params.set("types", types[0]);
+      } else {
+        params.set("types", types.join(" "));
+      }
+    }
+    return "?" + params;
   }
 
   function updateTypes(types: Type[]) {
-    // history.replace({ search: createParams(types) });
+    router.replace({ search: createParams(types) });
   }
 
   function updateType1(t: Type) {
@@ -43,10 +40,10 @@ export default function ScreenDefense(props: DefenseProps) {
     updateTypes([type1, t]);
   }
 
-  // const params = createParams([type1, type2]);
-  // React.useEffect(() => {
-  //   props.setDefenseParams(params);
-  // }, [params]);
+  const params = createParams([type1, type2]);
+  React.useEffect(() => {
+    setDefenseParams(params);
+  }, [params, setDefenseParams]);
 
   const classH2 = "tc f5 mv3";
   return (
@@ -76,5 +73,3 @@ export default function ScreenDefense(props: DefenseProps) {
     </Layout>
   );
 }
-
-ScreenDefense.displayName = "ScreenDefense";
