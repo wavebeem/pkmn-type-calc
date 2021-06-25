@@ -1,6 +1,5 @@
 import classnames from "classnames";
 import * as React from "react";
-import { PUBLIC_PATH } from "./settings";
 
 interface SearchProps {
   updateSearch: (search: string) => void;
@@ -14,11 +13,12 @@ export default function Search(props: SearchProps) {
   const inputHeight = 36;
   return (
     <div className="relative mv3">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={`${PUBLIC_PATH}svg/search.svg`}
+        src="/svg/search.svg"
         width={iconSize}
         height={iconSize}
-        role="presentation"
+        alt=""
         className="o-50 absolute dark:invert"
         style={{ left: 10, top: 8 }}
       />
@@ -46,11 +46,12 @@ export default function Search(props: SearchProps) {
         }}
         ref={ref}
       />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={`${PUBLIC_PATH}svg/clear.svg`}
+        src="/svg/clear.svg"
         width={iconSize}
         height={iconSize}
-        role="presentation"
+        alt=""
         onClick={() => {
           updateSearch("");
           if (ref.current) {

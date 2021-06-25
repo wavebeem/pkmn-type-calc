@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import * as React from "react";
-import { Type, types, typesOrNone } from "./data";
+import { Type, types, typesOrNone } from "../util/data";
 
 const buttonInnerHeight = "1.5rem";
 

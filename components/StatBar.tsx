@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Type } from "./data";
+import { Type } from "../util/data";
 
 export interface StatBarProps {
   value: number;

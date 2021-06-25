@@ -6,3 +6,4 @@ node_modules/
 /favicon-*.png
 
 .DS_Store
+.next

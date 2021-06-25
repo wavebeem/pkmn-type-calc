@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Type } from "./data";
-import { Pokemon } from "./pkmn";
+import { Type } from "../util/data";
+import { Pokemon } from "../util/pkmn";
 import StatBar from "./StatBar";
 
 const STAT_MAX = 255;

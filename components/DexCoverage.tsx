@@ -1,7 +1,9 @@
 import * as React from "react";
-import { CoverageType, Effectiveness, matchupFor, Type } from "./data";
+import { CoverageType, Effectiveness, matchupFor, Type } from "../util/data";
 import { PercentBar } from "./PercentBar";
-import { fallbackCoverageTypes } from "./pkmn";
+import { fallbackCoverageTypes } from "../util/pkmn";
+
+// TODO: Load fallbackCoverageTypes async to avoid bundle bloat?
 
 interface DexCoverageProps {
   coverageTypes?: CoverageType[];

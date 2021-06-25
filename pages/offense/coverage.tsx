@@ -2,11 +2,17 @@ import classnames from "classnames";
 import { closest } from "fastest-levenshtein";
 import Papa from "papaparse";
 import * as React from "react";
-import { Link } from "react-router-dom";
-import { CoverageType, objectToCoverageType, stringToType, Type } from "./data";
-import { pickFile } from "./pickFile";
-import { fallbackCoverageTypes } from "./pkmn";
-import { saveFile } from "./saveFile";
+import Link from "next/link";
+import {
+  CoverageType,
+  objectToCoverageType,
+  stringToType,
+  Type,
+} from "../../util/data";
+import { pickFile } from "../../util/pickFile";
+import { fallbackCoverageTypes } from "../../util/pkmn";
+import { saveFile } from "../../util/saveFile";
+import Layout from "../../components/Layout";
 
 const buttonClasses = classnames(
   "no-underline",
@@ -106,69 +112,72 @@ export default function ScreenWeaknessCoverage({
   }
 
   return (
-    <main className="pa3 center content-narrow lh-copy">
-      <h2 className="lh-title f5">Weakness Coverage</h2>
-      <p>
-        Import/export custom Pokédex CSV files to see weakness coverage for
-        different Pokémon. Create a custom CSV file with just the OU tier
-        Pokémon, or even create your own Pokémon from scratch.
-      </p>
-      <p>
-        CSV data is loaded by column header name, not column order, so you can
-        add or re-order columns if you want (e.g. add a "tier" column, or a
-        "notes" column).
-      </p>
-      <p>
-        CSV files can be edited with Google Sheets, Microsoft Excel, OpenOffice,
-        LibreOffice, Notepad, and more.
-      </p>
-      <div className="pt2 ButtonGrid">
-        <button
-          type="button"
-          className={buttonClasses}
-          onClick={() => {
-            saveCSV();
-          }}
-        >
-          Export
-        </button>
-        <span>Export the default Pokédex to a CSV file</span>
+    <Layout>
+      <main className="pa3 center content-narrow lh-copy">
+        <h2 className="lh-title f5">Weakness Coverage</h2>
+        <p>
+          Import/export custom Pokédex CSV files to see weakness coverage for
+          different Pokémon. Create a custom CSV file with just the OU tier
+          Pokémon, or even create your own Pokémon from scratch.
+        </p>
+        <p>
+          CSV data is loaded by column header name, not column order, so you can
+          add or re-order columns if you want (e.g. add a &quot;tier&quot;
+          column, or a &quot;notes&quot; column).
+        </p>
+        <p>
+          CSV files can be edited with Google Sheets, Microsoft Excel,
+          OpenOffice, LibreOffice, Notepad, and more.
+        </p>
+        <div className="pt2 ButtonGrid">
+          <button
+            type="button"
+            className={buttonClasses}
+            onClick={() => {
+              saveCSV();
+            }}
+          >
+            Export
+          </button>
+          <span>Export the default Pokédex to a CSV file</span>
 
-        <button
-          type="button"
-          className={buttonClasses}
-          onClick={() => {
-            loadCSV();
-          }}
-        >
-          Import
-        </button>
-        <span>Import an edited Pokédex CSV file</span>
+          <button
+            type="button"
+            className={buttonClasses}
+            onClick={() => {
+              loadCSV();
+            }}
+          >
+            Import
+          </button>
+          <span>Import an edited Pokédex CSV file</span>
 
-        <button
-          type="button"
-          className={buttonClasses}
-          onClick={() => {
-            loadDefault();
-          }}
-        >
-          Reset
-        </button>
-        <span>Reset to the default Pokédex</span>
-      </div>
-      <p className="f4 b" hidden={!statusText} ref={statusRef}>
-        {statusText}
-      </p>
-      <p>
-        <Link
-          to={`/offense${offenseParams}`}
-          className="underline fg-link OutlineFocus"
-          aria-label="Back to offense"
-        >
-          &larr; Back to offense
-        </Link>
-      </p>
-    </main>
+          <button
+            type="button"
+            className={buttonClasses}
+            onClick={() => {
+              loadDefault();
+            }}
+          >
+            Reset
+          </button>
+          <span>Reset to the default Pokédex</span>
+        </div>
+        <p className="f4 b" hidden={!statusText} ref={statusRef}>
+          {statusText}
+        </p>
+        <p>
+          <Link href={`/offense${offenseParams}`}>
+            <a
+              className="underline fg-link OutlineFocus"
+              aria-label="Back to offense"
+            >
+              &larr; Back to offense
+            </a>
+          </Link>
+        </p>
+      </main>
+    </Layout>
   );
 }
 

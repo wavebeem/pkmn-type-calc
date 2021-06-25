@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import * as React from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import {
   CoverageType,
   defensiveMatchups,
@@ -8,15 +8,8 @@ import {
   GroupedMatchups,
   offensiveMatchups,
   Type,
-} from "./data";
-
-const DexCoverage = React.lazy(async () => {
-  return await import(
-    /* webpackChunkName: "DexCoverage" */
-    /* webpackPrefetch: true */
-    "./DexCoverage"
-  );
-});
+} from "../util/data";
+import DexCoverage from "./DexCoverage";
 
 interface BadgeProps {
   type: Type;
@@ -88,28 +81,14 @@ function Matchups({
             Weakness Coverage{" "}
             <span className="normal">
               (
-              <Link
-                to="/offense/coverage"
-                className="underline fg-link OutlineFocus"
-              >
-                edit
+              <Link href="/offense/coverage">
+                <a className="underline fg-link OutlineFocus">edit</a>
               </Link>
               )
             </span>
           </h3>
           <div className="pt1 mw5 center tc">
-            <React.Suspense
-              fallback={
-                <div
-                  style={{ minHeight: 44 }}
-                  className="flex justify-center items-center"
-                >
-                  <div className="Spinner f2 center" />
-                </div>
-              }
-            >
-              <DexCoverage coverageTypes={coverageTypes} types={types} />
-            </React.Suspense>
+            <DexCoverage coverageTypes={coverageTypes} types={types} />
           </div>
         </div>
       ) : null}

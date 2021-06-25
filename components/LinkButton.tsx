@@ -1,14 +1,15 @@
 import classnames from "classnames";
+import Link from "next/link";
 import * as React from "react";
-import { Link, LinkProps } from "react-router-dom";
 
-interface LinkButtonProps extends LinkProps {
+interface LinkButtonProps extends React.AnchorHTMLAttributes<never> {
   disabled?: boolean;
+  href: string;
 }
 
 export function LinkButton({
   disabled = false,
-  to,
+  href,
   className,
   ...props
 }: LinkButtonProps) {
@@ -27,17 +28,17 @@ export function LinkButton({
     );
   }
   return (
-    <Link
-      {...props}
-      to={to}
-      tabIndex={0}
-      onClick={props.onClick}
-      className={classnames(
-        className,
-        baseClasses,
-        "border2 button-shadow button-bg button-bg-hover color-inherit active-squish"
-      )}
-    />
+    <Link href={href}>
+      <a
+        onClick={props.onClick}
+        className={classnames(
+          className,
+          baseClasses,
+          "border2 button-shadow button-bg button-bg-hover color-inherit active-squish"
+        )}
+        {...props}
+      ></a>
+    </Link>
   );
 }
 

@@ -45,7 +45,7 @@ function PageSelector(props: PageSelectorProps) {
           setScrollTo(props.location);
         }}
         disabled={!props.hasPrev}
-        to={props.urlForPage(0)}
+        href={props.urlForPage(0)}
         aria-label="First"
       >
         &laquo;
@@ -56,7 +56,7 @@ function PageSelector(props: PageSelectorProps) {
           setScrollTo(props.location);
         }}
         disabled={!props.hasPrev}
-        to={props.urlForPage(props.currentPage - 1)}
+        href={props.urlForPage(props.currentPage - 1)}
         aria-label="Previous"
       >
         <span role="presentation">&lsaquo; </span>Prev
@@ -73,7 +73,7 @@ function PageSelector(props: PageSelectorProps) {
           setScrollTo(props.location);
         }}
         disabled={!props.hasNext}
-        to={props.urlForPage(props.currentPage + 1)}
+        href={props.urlForPage(props.currentPage + 1)}
         aria-label="Next"
       >
         Next<span role="presentation"> &rsaquo;</span>
@@ -84,7 +84,7 @@ function PageSelector(props: PageSelectorProps) {
           setScrollTo(props.location);
         }}
         disabled={!props.hasNext}
-        to={props.urlForPage(props.numPages - 1)}
+        href={props.urlForPage(props.numPages - 1)}
         aria-label="Last"
       >
         &raquo;

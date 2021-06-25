@@ -1,15 +1,15 @@
 import classnames from "classnames";
 import matchSorter from "match-sorter";
 import * as React from "react";
-import { Link, useHistory } from "react-router-dom";
-import { Type } from "./data";
-import { getImage } from "./getImage";
-import Paginator from "./Paginator";
-import { pickTranslation } from "./pickTranslation";
-import { AllPokemon, Pokemon } from "./pkmn";
-import Search from "./Search";
-import StatsTable from "./StatsTable";
-import { useSearch } from "./useSearch";
+import Link from "next/link";
+import { Type } from "../util/data";
+import { getImage } from "../components/getImage";
+import Paginator from "../components/Paginator";
+import { pickTranslation } from "../util/pickTranslation";
+import { AllPokemon, Pokemon } from "../util/pkmn";
+import Search from "../components/Search";
+import StatsTable from "../components/StatsTable";
+import Layout from "../components/Layout";
 
 const PAGE_SIZE = 20;
 const nbsp = "\u00a0";
@@ -59,6 +59,7 @@ function Monster(props: MonsterProps) {
           <div className="nv2 fg3 f5">{formName || nbsp}</div>
 
           <div className="pv3 flex justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={getImage(props.pokemon.id)}
               role="presentation"
@@ -79,22 +80,24 @@ function Monster(props: MonsterProps) {
       <div className="flex flex-column">
         <StatsTable pokemon={props.pokemon} />
         <div className="flex justify-end">
-          <Link
-            aria-label={`Offense for ${speciesName} (${formName})`}
-            className="underline fg-link OutlineFocus"
-            to={`/offense?${params}`}
-          >
-            Offense
+          <Link href={`/offense?${params}`}>
+            <a
+              aria-label={`Offense for ${speciesName} (${formName})`}
+              className="underline fg-link OutlineFocus"
+            >
+              Offense
+            </a>
           </Link>
           <span aria-hidden="true" className="o-50">
             &nbsp;&bull;&nbsp;
           </span>
-          <Link
-            aria-label={`Defense for ${speciesName} (${formName})`}
-            className="underline fg-link OutlineFocus"
-            to={`/defense?${params}`}
-          >
-            Defense
+          <Link href={`/defense?${params}`}>
+            <a
+              aria-label={`Defense for ${speciesName} (${formName})`}
+              className="underline fg-link OutlineFocus"
+            >
+              Defense
+            </a>
           </Link>
         </div>
       </div>
@@ -109,20 +112,25 @@ interface DexProps {
 }
 
 export default function ScreenPokedex(props: DexProps) {
-  const search = useSearch();
-  const history = useHistory();
+  // const search = useSearch();
+  // const history = useHistory();
 
-  const query = search.get("q") || "";
-  const page = Number(search.get("page") || 1) - 1;
+  // const query = search.get("q") || "";
+  // const page = Number(search.get("page") || 1) - 1;
 
-  const pkmn = React.useMemo(() => {
-    const s = query.trim();
-    if (/^[0-9]+$/.test(s)) {
-      const number = Number(s);
-      return AllPokemon.filter((p) => p.number === number);
-    }
-    return matchSorter(AllPokemon, s, { keys: ["name", "number"] });
-  }, [query]);
+  const query = "";
+  const page = 0;
+
+  // const pkmn = React.useMemo(() => {
+  //   const s = query.trim();
+  //   if (/^[0-9]+$/.test(s)) {
+  //     const number = Number(s);
+  //     return AllPokemon.filter((p) => p.number === number);
+  //   }
+  //   return matchSorter(AllPokemon, s, { keys: ["name", "number"] });
+  // }, [query]);
+
+  const pkmn = AllPokemon;
 
   function createParams(newQuery: string, newPage: number): string {
     const params = new URLSearchParams();
@@ -136,38 +144,40 @@ export default function ScreenPokedex(props: DexProps) {
   }
 
   function update(newQuery: string, newPage: number) {
-    const params = createParams(newQuery, newPage);
-    history.replace({ search: params });
+    // const params = createParams(newQuery, newPage);
+    // history.replace({ search: params });
   }
 
-  const params = createParams(query, page);
-  React.useEffect(() => {
-    props.setPokedexParams(params);
-  }, [params]);
+  // const params = createParams(query, page);
+  // React.useEffect(() => {
+  //   props.setPokedexParams(params);
+  // }, [params]);
 
   return (
-    <main className="ph3 mt3 center content-narrow">
-      <Search
-        search={query}
-        updateSearch={(newQuery) => {
-          update(newQuery, 0);
-        }}
-      />
-      <Paginator
-        currentPage={page}
-        urlForPage={(newPage) => {
-          return createParams(query, newPage);
-        }}
-        pageSize={PAGE_SIZE}
-        emptyState={<p className="fg4 f4 b tc m0">No Pokémon found</p>}
-        items={pkmn}
-        renderPage={(page) =>
-          page.map((pokemon, index) => (
-            <Monster key={pokemon.id} pokemon={pokemon} index={index} />
-          ))
-        }
-      />
-    </main>
+    <Layout>
+      <main className="ph3 mt3 center content-narrow">
+        <Search
+          search={query}
+          updateSearch={(newQuery) => {
+            update(newQuery, 0);
+          }}
+        />
+        <Paginator
+          currentPage={page}
+          urlForPage={(newPage) => {
+            return createParams(query, newPage);
+          }}
+          pageSize={PAGE_SIZE}
+          emptyState={<p className="fg4 f4 b tc m0">No Pokémon found</p>}
+          items={pkmn}
+          renderPage={(page) =>
+            page.map((pokemon, index) => (
+              <Monster key={pokemon.id} pokemon={pokemon} index={index} />
+            ))
+          }
+        />
+      </main>
+    </Layout>
   );
 }
 

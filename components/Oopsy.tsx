@@ -1,10 +1,12 @@
 import * as React from "react";
+import Link from "next/link";
 
-type ScreenErrorProps = {
+type OopsyProps = {
   error: Error;
 };
 
-const ScreenError: React.FC<ScreenErrorProps> = ({ error }) => {
+// TODO: Does Next supply its own ErrorBoundary for us?
+const Oopsy: React.FC<OopsyProps> = ({ error }) => {
   return (
     <div className="sans-serif ph4 content-narrow f4 center fg2 lh-copy">
       <h1>pkmn.help: Error</h1>
@@ -20,14 +22,14 @@ const ScreenError: React.FC<ScreenErrorProps> = ({ error }) => {
         {error.message}
       </pre>
       <p>
-        <a href="/" className="f3 fg-link">
-          &larr; Back to pkmn.help
-        </a>
+        <Link href="/">
+          <a className="f3 fg-link">&larr; Back to pkmn.help</a>
+        </Link>
       </p>
     </div>
   );
 };
 
-ScreenError.displayName = "ScreenError";
+Oopsy.displayName = "Oopsy";
 
-export default ScreenError;
+export default Oopsy;

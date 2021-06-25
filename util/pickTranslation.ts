@@ -2,7 +2,7 @@ export function pickTranslation(obj: Record<string, string>): string {
   // Browsers typically only include a region code after the language, but
   // PokéAPI tells us the script instead. Map the region codes to script codes
   // for Simplified vs Traditional Chinese
-  const languages = navigator.languages
+  const languages = (globalThis?.navigator?.languages ?? ["en"])
     .map((s) => s.toLowerCase())
     .map((s) => {
       if (s === "zh-tw" || s === "zh-hk" || s === "zh-mo") {
