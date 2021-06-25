@@ -5,14 +5,14 @@ import TypeSelector from "../components/TypeSelector";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import { useQuery } from "../util/useQuery";
-import { useSessionStorage } from "../util/useSessionStorage";
+import { useStorage } from "../util/useStorage";
 
 interface DefenseProps {}
 
 export default function Defense({}: DefenseProps) {
   const router = useRouter();
   const types = useQuery("types") ?? "";
-  const [, setDefenseParams] = useSessionStorage("params.defense", "");
+  const [, updateStorage] = useStorage();
 
   const [type1 = Type.NORMAL, type2 = Type.NONE] = typesFromString(types);
 
@@ -29,7 +29,9 @@ export default function Defense({}: DefenseProps) {
   }
 
   function updateTypes(types: Type[]) {
-    router.replace({ search: createParams(types) });
+    router.replace({ search: createParams(types) }, undefined, {
+      scroll: false,
+    });
   }
 
   function updateType1(t: Type) {
@@ -42,8 +44,8 @@ export default function Defense({}: DefenseProps) {
 
   const params = createParams([type1, type2]);
   React.useEffect(() => {
-    setDefenseParams(params);
-  }, [params, setDefenseParams]);
+    updateStorage({ paramsDefense: params });
+  }, [params, updateStorage]);
 
   const classH2 = "tc f5 mv3";
   return (

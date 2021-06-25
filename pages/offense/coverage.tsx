@@ -13,7 +13,7 @@ import { pickFile } from "../../util/pickFile";
 import { fallbackCoverageTypes } from "../../util/pkmn";
 import { saveFile } from "../../util/saveFile";
 import Layout from "../../components/Layout";
-import { useSessionStorage } from "../../util/useSessionStorage";
+import { useStorage } from "../../util/useStorage";
 
 const buttonClasses = classnames(
   "no-underline",
@@ -32,7 +32,7 @@ interface WeaknessCoverageProps {
 export default function ScreenWeaknessCoverage({
   setCoverageTypes,
 }: WeaknessCoverageProps) {
-  const [offenseParams] = useSessionStorage("params.offense", "");
+  const [storage] = useStorage();
   const [lastUpdated, setLastUpdated] = React.useState(new Date());
   const [statusText, setStatusText] = React.useState("");
   const statusRef = React.useRef<HTMLParagraphElement | null>(null);
@@ -167,7 +167,7 @@ export default function ScreenWeaknessCoverage({
           {statusText}
         </p>
         <p>
-          <Link href={`/offense${offenseParams}`}>
+          <Link href={`/offense${storage.paramsOffense}`}>
             <a
               className="underline fg-link OutlineFocus"
               aria-label="Back to offense"

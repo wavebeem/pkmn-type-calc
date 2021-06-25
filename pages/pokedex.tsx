@@ -7,7 +7,7 @@ import Search from "../components/Search";
 import Monster from "../components/Monster";
 import { AllPokemon } from "../util/pkmn";
 import { useQuery } from "../util/useQuery";
-import { useSessionStorage } from "../util/useSessionStorage";
+import { useStorage } from "../util/useStorage";
 
 const PAGE_SIZE = 20;
 
@@ -18,7 +18,7 @@ export default function ScreenPokedex({}: DexProps) {
   const query = useQuery("q") ?? "";
   const page = Number(useQuery("page") ?? "1") - 1;
 
-  const [, setPokedexParams] = useSessionStorage("params.pokedex", "");
+  const [, updateStorage] = useStorage();
 
   const pkmn = React.useMemo(() => {
     const s = query.trim();
@@ -42,13 +42,13 @@ export default function ScreenPokedex({}: DexProps) {
 
   function update(newQuery: string, newPage: number) {
     const params = createParams(newQuery, newPage);
-    router.replace({ search: params });
+    router.replace({ search: params }, undefined, { scroll: false });
   }
 
   const params = createParams(query, page);
   React.useEffect(() => {
-    setPokedexParams(params);
-  }, [params, setPokedexParams]);
+    updateStorage({ paramsPokedex: params });
+  }, [params, updateStorage]);
 
   return (
     <Layout>

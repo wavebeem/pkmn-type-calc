@@ -2,8 +2,16 @@ import fetch from "node-fetch";
 import path from "path";
 import fs from "fs";
 
+const Logger = {
+  // eslint-disable-next-line no-console
+  log: console.log.bind(console),
+  // eslint-disable-next-line no-console
+  warn: console.warn.bind(console),
+  // eslint-disable-next-line no-console
+  error: console.error.bind(console),
+};
+
 const SRC = path.resolve(__dirname, "../data/pokemon.json");
-const NOT_FOUND = path.resolve(__dirname, "not-found.png");
 const IMG_DEST = path.resolve(__dirname, "../img");
 const DATA_DEST = path.resolve(__dirname, "../src/data-pkmn.json");
 
@@ -31,7 +39,7 @@ async function main(): Promise<void> {
     if (item.spriteURL && !fs.existsSync(imgFilename)) {
       const img = await fetchBuffer(item.spriteURL);
       fs.writeFileSync(imgFilename, img);
-      console.log(item.id);
+      Logger.log(item.id);
     }
     delete item.spriteURL;
   }
@@ -39,6 +47,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((err) => {
-  console.error(err);
+  Logger.error(err);
   process.exit(1);
 });

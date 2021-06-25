@@ -4,14 +4,14 @@ import { CoverageType, Type, typesFromString } from "../../util/data";
 import * as Matchups from "../../components/Matchups";
 import MultiTypeSelector from "../../components/MultiTypeSelector";
 import Layout from "../../components/Layout";
-import { useSessionStorage } from "../../util/useSessionStorage";
+import { useStorage } from "../../util/useStorage";
 import { useQuery } from "../../util/useQuery";
 
 interface OffenseProps {}
 
 export default function ScreenOffense({}: OffenseProps) {
   const router = useRouter();
-  const [, setOffenseParams] = useSessionStorage("params.offense", "");
+  const [, updateStorage] = useStorage();
   const types = useQuery("types") ?? "";
   const offenseTypes = typesFromString(types);
   const [coverageTypes, setCoverageTypes] = React.useState<CoverageType[]>([]);
@@ -37,13 +37,15 @@ export default function ScreenOffense({}: OffenseProps) {
   }
 
   const updateOffenseTypes = (types: Type[]) => {
-    router.replace({ search: createParams(types) });
+    router.replace({ search: createParams(types) }, undefined, {
+      scroll: false,
+    });
   };
 
   const params = createParams(offenseTypes);
   React.useEffect(() => {
-    setOffenseParams(params);
-  }, [params, setOffenseParams]);
+    updateStorage({ paramsOffense: params });
+  }, [params, updateStorage]);
 
   const classH2 = "tc f5 mv3";
   return (

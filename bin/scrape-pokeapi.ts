@@ -3,6 +3,15 @@ import path from "path";
 import fs from "fs";
 import { URL } from "url";
 
+const Logger = {
+  // eslint-disable-next-line no-console
+  log: console.log.bind(console),
+  // eslint-disable-next-line no-console
+  warn: console.warn.bind(console),
+  // eslint-disable-next-line no-console
+  error: console.error.bind(console),
+};
+
 const API = process.env.API || "https://pokeapi.co/api/v2/";
 const DEST = path.resolve(__dirname, "../data");
 
@@ -168,13 +177,13 @@ async function main(): Promise<void> {
         types: detail.types.map((t) => t.type.name),
       };
       pokemonSimpleList.push(mon);
-      console.log(speciesDetail.id, detail.id);
+      Logger.log(speciesDetail.id, detail.id);
     }
   }
   saveJSON(path.resolve(DEST, "pokemon.json"), pokemonSimpleList);
 }
 
 main().catch((err) => {
-  console.error(err);
+  Logger.error(err);
   process.exit(1);
 });

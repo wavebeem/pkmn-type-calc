@@ -3,6 +3,7 @@ import Link from "next/link";
 import Head from "next/head";
 import classnames from "classnames";
 import BasicHead from "./BasicHead";
+import { useStorage } from "../util/useStorage";
 
 interface NavLinkProps {
   className: string;
@@ -40,10 +41,7 @@ const tabClass = classnames(
 const tabClassActive = classnames("fg1 bottom-border-thick-current");
 
 const Layout: React.FC = ({ children }) => {
-  // TODO: Fetch from localStorage
-  const offenseParams = "";
-  const defenseParams = "";
-  const pokedexParams = "";
+  const [storage] = useStorage();
   return (
     <>
       <Head>
@@ -69,21 +67,21 @@ const Layout: React.FC = ({ children }) => {
             <NavLink
               className={tabClass}
               activeClassName={tabClassActive}
-              href={`/offense${offenseParams}`}
+              href={`/offense${storage.paramsOffense}`}
             >
               Offense
             </NavLink>
             <NavLink
               className={tabClass}
               activeClassName={tabClassActive}
-              href={`/defense${defenseParams}`}
+              href={`/defense${storage.paramsDefense}`}
             >
               Defense
             </NavLink>
             <NavLink
               className={tabClass}
               activeClassName={tabClassActive}
-              href={`/pokedex${pokedexParams}`}
+              href={`/pokedex${storage.paramsPokedex}`}
             >
               Pokédex
             </NavLink>
