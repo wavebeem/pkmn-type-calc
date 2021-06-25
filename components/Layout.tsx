@@ -10,9 +10,10 @@ interface NavLinkProps {
   href: string;
 }
 
+// TODO: Use activeClassName somehow
+// https://flaviocopes.com/nextjs-active-link/
 const NavLink: React.FC<NavLinkProps> = ({
   className,
-  // TODO: Use activeClassName somehow
   activeClassName,
   href,
   children,
