@@ -29,6 +29,10 @@ const development = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
+    alias: {
+      react: "preact/compat",
+      "react-dom": "preact/compat",
+    },
   },
   module: {
     rules: [

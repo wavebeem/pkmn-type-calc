@@ -11,7 +11,8 @@
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "allowUmdGlobalAccess": false
+    "allowUmdGlobalAccess": false,
+    "skipLibCheck": true
   },
   "include": ["src", "bin"],
   "exclude": ["node_modules"]

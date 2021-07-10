@@ -1,18 +1,16 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+/** @jsx h */
+import { h, render } from "preact";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import ErrorBoundary from "./ErrorBoundary";
 import ScreenError from "./ScreenError";
 import "./style.css";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <ErrorBoundary render={(error) => <ScreenError error={error} />}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ErrorBoundary>
-  </React.StrictMode>,
-  document.querySelector("#app")
+render(
+  <ErrorBoundary render={(error) => <ScreenError error={error} />}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </ErrorBoundary>,
+  document.querySelector("#app") ?? document.body
 );
