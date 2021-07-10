@@ -1,4 +1,4 @@
-import * as React from "react";
+import { h } from "preact";
 import { Link } from "react-router-dom";
 
 interface ScreenPokdexHelpProps {

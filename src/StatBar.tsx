@@ -1,4 +1,4 @@
-import * as React from "react";
+import { h } from "preact";
 import { Type } from "./data";
 
 export interface StatBarProps {
@@ -12,11 +12,11 @@ export default function StatBar({ value, max, type }: StatBarProps) {
     <div className="flex h1 w-100 Bar-Container">
       <div
         style={{
-          width: (value / max) * 100 + "%",
+          width: `${(value / max) * 100}%`,
           background: "var(--type-color-2)",
         }}
         className={`type-${type} Bar-Fill`}
-      ></div>
+      />
     </div>
   );
 }

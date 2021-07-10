@@ -1,7 +1,8 @@
 import classnames from "classnames";
 import { closest } from "fastest-levenshtein";
 import Papa from "papaparse";
-import * as React from "react";
+import { h } from "preact";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { Link } from "react-router-dom";
 import { CoverageType, objectToCoverageType, stringToType, Type } from "./data";
 import { pickFile } from "./pickFile";
@@ -30,11 +31,11 @@ export default function ScreenWeaknessCoverage({
   fallbackCoverageTypes,
   isLoading,
 }: WeaknessCoverageProps) {
-  const [lastUpdated, setLastUpdated] = React.useState(new Date());
-  const [statusText, setStatusText] = React.useState("");
-  const statusRef = React.useRef<HTMLParagraphElement | null>(null);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [statusText, setStatusText] = useState("");
+  const statusRef = useRef<HTMLParagraphElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (statusRef.current instanceof HTMLElement) {
       statusRef.current.scrollIntoView();
     }

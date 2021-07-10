@@ -1,4 +1,3 @@
-/** @jsx h */
 import { h, render } from "preact";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";

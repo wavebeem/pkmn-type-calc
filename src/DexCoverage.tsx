@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment, FunctionComponent, h } from "preact";
 import { CoverageType, Effectiveness, matchupFor, Type } from "./data";
 import { PercentBar } from "./PercentBar";
 
@@ -8,7 +8,7 @@ interface DexCoverageProps {
   isLoading: boolean;
 }
 
-const DexCoverage: React.FC<DexCoverageProps> = ({
+const DexCoverage: FunctionComponent<DexCoverageProps> = ({
   coverageTypes,
   types,
   isLoading,
@@ -29,12 +29,12 @@ const DexCoverage: React.FC<DexCoverageProps> = ({
         {isLoading ? (
           <div className="flex-auto tc">Loading...</div>
         ) : (
-          <>
+          <Fragment>
             <div className="tl mr2 w3">{percent}%</div>
             <div className="flex-auto tr">
               {count} / {total} forms
             </div>
-          </>
+          </Fragment>
         )}
       </div>
     </div>

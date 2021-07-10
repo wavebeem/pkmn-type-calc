@@ -1,31 +1,19 @@
-import * as React from "react";
+import { Fragment, FunctionComponent, h, VNode } from "preact";
+import { useErrorBoundary } from "preact/hooks";
 
 interface ErrorBoundaryProps {
-  render: (error: Error) => React.ReactNode;
+  render: (error: Error) => VNode;
 }
 
-interface ErrorBoundaryState {
-  error?: Error;
-}
-
-export default class ErrorBoundary extends React.Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
-  static displayName = "ErrorBoundary";
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = {};
+const ErrorBoundary: FunctionComponent<ErrorBoundaryProps> = ({
+  render,
+  children,
+}) => {
+  const [error, _resetError] = useErrorBoundary();
+  if (error) {
+    return <Fragment>{render(error)}</Fragment>;
   }
+  return <Fragment>{children}</Fragment>;
+};
 
-  static getDerivedStateFromError(error: Error) {
-    return { error };
-  }
-
-  render() {
-    if (this.state.error) {
-      return this.props.render(this.state.error);
-    }
-    return this.props.children;
-  }
-}
+export default ErrorBoundary;

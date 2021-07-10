@@ -1,5 +1,6 @@
 import classnames from "classnames";
-import * as React from "react";
+import { h } from "preact";
+import { useRef } from "preact/hooks";
 import { PUBLIC_PATH } from "./settings";
 
 interface SearchProps {
@@ -15,7 +16,7 @@ preloadImage("/svg/search.svg");
 preloadImage("/svg/clear.svg");
 
 export default function Search({ updateSearch, search }: SearchProps) {
-  const ref = React.useRef<HTMLInputElement>(null);
+  const ref = useRef<HTMLInputElement>(null);
   const iconSize = 24;
   const inputHeight = 36;
   return (
@@ -48,7 +49,9 @@ export default function Search({ updateSearch, search }: SearchProps) {
         style={{ paddingLeft: 40, paddingRight: 40, height: inputHeight }}
         value={search}
         onChange={(event) => {
-          updateSearch(event.target.value);
+          if (event.target instanceof HTMLInputElement) {
+            updateSearch(event.target.value);
+          }
         }}
         ref={ref}
       />

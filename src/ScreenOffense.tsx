@@ -1,4 +1,5 @@
-import * as React from "react";
+import { h } from "preact";
+import { useEffect } from "preact/hooks";
 import { useHistory } from "react-router-dom";
 import { CoverageType, Type, typesFromString } from "./data";
 import * as Matchups from "./Matchups";
@@ -29,7 +30,7 @@ export default function ScreenOffense({
     if (types.length > 0) {
       params.set("types", types.join(" "));
     }
-    return "?" + params;
+    return `?${params}`;
   }
 
   const updateOffenseTypes = (types: Type[]) => {
@@ -37,7 +38,7 @@ export default function ScreenOffense({
   };
 
   const params = createParams(offenseTypes);
-  React.useEffect(() => {
+  useEffect(() => {
     setOffenseParams(params);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);

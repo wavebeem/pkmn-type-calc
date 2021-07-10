@@ -17,7 +17,7 @@ module.exports = {
     // TODO: This rule should ignore the JSX pragma... should file an issue
     "@typescript-eslint/no-unused-vars": [
       "error",
-      { varsIgnorePattern: "^h$" },
+      { varsIgnorePattern: "^(h$|_)" },
     ],
   },
 };

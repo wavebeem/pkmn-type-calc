@@ -1,10 +1,10 @@
-import * as React from "react";
+import { FunctionComponent, h } from "preact";
 
-type ScreenErrorProps = {
+interface ScreenErrorProps {
   error: Error;
-};
+}
 
-const ScreenError: React.FC<ScreenErrorProps> = ({ error }) => {
+const ScreenError: FunctionComponent<ScreenErrorProps> = ({ error }) => {
   return (
     <div className="sans-serif ph4 content-narrow f4 center fg2 lh-copy">
       <h1>pkmn.help: Error</h1>

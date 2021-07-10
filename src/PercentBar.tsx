@@ -1,4 +1,4 @@
-import * as React from "react";
+import { h } from "preact";
 
 export interface PercentBarProps {
   value: number;
@@ -10,11 +10,11 @@ export function PercentBar({ value, max }: PercentBarProps) {
     <div className="flex h1 w-100 Bar-Container">
       <div
         style={{
-          width: (value / max) * 100 + "%",
+          width: `${(value / max) * 100}%`,
           background: "var(--color-fg3)",
         }}
         className="Bar-Fill"
-      ></div>
+      />
     </div>
   );
 }

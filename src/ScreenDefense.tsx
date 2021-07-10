@@ -1,4 +1,5 @@
-import * as React from "react";
+import { h } from "preact";
+import { useEffect } from "preact/hooks";
 import { useHistory } from "react-router-dom";
 import { CoverageType, Type, typesFromString } from "./data";
 import * as Matchups from "./Matchups";
@@ -16,7 +17,6 @@ export default function ScreenDefense({
   fallbackCoverageTypes,
 }: DefenseProps) {
   useScrollToFragment();
-
   const search = useSearch();
   const history = useHistory();
 
@@ -33,7 +33,7 @@ export default function ScreenDefense({
         params.set("types", types.join(" "));
       }
     }
-    return "?" + params;
+    return `?${params}`;
   }
 
   function updateTypes(types: Type[]) {
@@ -49,7 +49,7 @@ export default function ScreenDefense({
   }
 
   const params = createParams([type1, type2]);
-  React.useEffect(() => {
+  useEffect(() => {
     setDefenseParams(params);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);

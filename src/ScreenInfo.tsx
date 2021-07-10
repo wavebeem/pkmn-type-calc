@@ -1,8 +1,7 @@
-import * as React from "react";
-
-const year = new Date().getFullYear();
+import { h } from "preact";
 
 export default function ScreenInfo() {
+  const year = new Date().getFullYear();
   return (
     <main className="pa3 center content-narrow lh-copy">
       <h2 className="lh-title f4">Contact Me</h2>

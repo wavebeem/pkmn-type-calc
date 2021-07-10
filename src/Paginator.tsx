@@ -1,5 +1,6 @@
 import classnames from "classnames";
-import * as React from "react";
+import { h } from "preact";
+import { useState, useLayoutEffect } from "preact/hooks";
 import { LinkButton } from "./LinkButton";
 
 enum Location {
@@ -28,11 +29,9 @@ function PageSelector({
 }: PageSelectorProps) {
   // Attempt to stay anchored to the top or bottom of the page when using
   // pagination buttons to avoid the screen jumping around and stuff
-  const [scrollTo, setScrollTo] = React.useState<Location | undefined>(
-    undefined
-  );
+  const [scrollTo, setScrollTo] = useState<Location | undefined>(undefined);
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     if (scrollTo === Location.TOP) {
       window.scrollTo(0, 0);
     } else if (scrollTo === Location.BOTTOM) {

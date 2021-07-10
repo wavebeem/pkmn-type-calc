@@ -1,5 +1,6 @@
 import classnames from "classnames";
-import * as React from "react";
+import { h } from "preact";
+import { useEffect, useState } from "preact/hooks";
 import { Link, NavLink, Redirect, Route, Switch } from "react-router-dom";
 import { CoverageType, Pokemon } from "./data";
 import ScreenDefense from "./ScreenDefense";
@@ -22,16 +23,16 @@ const tabClass = classnames([
 const tabClassActive = classnames(["fg1 bottom-border-thick-current"]);
 
 export default function App() {
-  const [defenseParams, setDefenseParams] = React.useState("");
-  const [offenseParams, setOffenseParams] = React.useState("");
-  const [pokedexParams, setPokedexParams] = React.useState("");
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [coverageTypes, setCoverageTypes] = React.useState<CoverageType[]>([]);
-  const [fallbackCoverageTypes, setFallbackCoverageTypes] = React.useState<
+  const [defenseParams, setDefenseParams] = useState("");
+  const [offenseParams, setOffenseParams] = useState("");
+  const [pokedexParams, setPokedexParams] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [coverageTypes, setCoverageTypes] = useState<CoverageType[]>([]);
+  const [fallbackCoverageTypes, setFallbackCoverageTypes] = useState<
     CoverageType[]
   >([]);
-  const [AllPokemon, setAllPokemon] = React.useState<Pokemon[]>([]);
-  React.useEffect(() => {
+  const [AllPokemon, setAllPokemon] = useState<Pokemon[]>([]);
+  useEffect(() => {
     async function load() {
       const bigPKMN = await import(
         /* webpackChunkName: "big-pkmn" */

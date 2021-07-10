@@ -1,8 +1,11 @@
+import { h } from "preact";
 import classnames from "classnames";
-import * as React from "react";
-import { Link, LinkProps } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-interface LinkButtonProps extends LinkProps {
+// TODO: LinkProps from react-router-dom doens't play well with preact's type
+// definitions for the `<a>` tag...
+interface LinkButtonProps {
+  [key: string]: any;
   disabled?: boolean;
 }
 

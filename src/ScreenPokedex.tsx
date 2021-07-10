@@ -1,7 +1,9 @@
 import classnames from "classnames";
 import matchSorter from "match-sorter";
-import * as React from "react";
+import { h } from "preact";
+import { useEffect, useMemo } from "preact/hooks";
 import { Link, useHistory } from "react-router-dom";
+import { useDebounce } from "use-debounce";
 import { Pokemon, Type, typesOrNoneFromString } from "./data";
 import { getImage } from "./getImage";
 import Paginator from "./Paginator";
@@ -9,7 +11,6 @@ import { pickTranslation } from "./pickTranslation";
 import Search from "./Search";
 import StatsTable from "./StatsTable";
 import { useSearch } from "./useSearch";
-import { useDebounce } from "use-debounce";
 
 const PAGE_SIZE = 20;
 const nbsp = "\u00a0";
@@ -42,7 +43,7 @@ interface MonsterProps {
 }
 
 function Monster({ pokemon }: MonsterProps) {
-  const displayNumber = "#" + String(pokemon.number).padStart(3, "0");
+  const displayNumber = `#${String(pokemon.number).padStart(3, "0")}`;
   const params = new URLSearchParams({ types: pokemon.types.join(" ") });
   const speciesName = pickTranslation(pokemon.speciesNames);
   const formName = pickTranslation(pokemon.formNames);
@@ -130,7 +131,7 @@ export default function ScreenPokedex({
   const [debouncedQuery] = useDebounce(query, 500);
   const page = Number(search.get("page") || 1) - 1;
 
-  const searchablePkmn = React.useMemo(() => {
+  const searchablePkmn = useMemo(() => {
     return allPokemon.map((p) => {
       return {
         ...p,
@@ -140,7 +141,7 @@ export default function ScreenPokedex({
     });
   }, [allPokemon]);
 
-  const pkmn = React.useMemo(() => {
+  const pkmn = useMemo(() => {
     const s = debouncedQuery.trim();
     if (/^[0-9]+$/.test(s)) {
       const number = Number(s);
@@ -173,7 +174,7 @@ export default function ScreenPokedex({
     if (Number(newPage) > 0) {
       params.set("page", String(newPage + 1));
     }
-    return "?" + params;
+    return `?${params}`;
   }
 
   function update(newQuery: string, newPage: number) {
@@ -182,7 +183,7 @@ export default function ScreenPokedex({
   }
 
   const params = createParams(query, page);
-  React.useEffect(() => {
+  useEffect(() => {
     setPokedexParams(params);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
